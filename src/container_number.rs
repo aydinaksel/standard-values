@@ -112,6 +112,11 @@ impl ContainerNumber {
     }
 
     #[must_use]
+    pub fn prefix(&self) -> &str {
+        self.0.get(..PREFIX_LENGTH).unwrap_or_default()
+    }
+
+    #[must_use]
     pub fn owner_code(&self) -> &str {
         self.0.get(..OWNER_CODE_LENGTH).unwrap_or_default()
     }
@@ -184,6 +189,7 @@ mod tests {
     fn accepts_unusual_equipment_categories_but_reports_them() {
         let number = ContainerNumber::parse("CSQA3054383").unwrap();
         assert_eq!(number.owner_code(), "CSQ");
+        assert_eq!(number.prefix(), "CSQA");
         assert_eq!(number.equipment_category(), 'A');
         assert!(!number.has_standard_equipment_category());
     }
