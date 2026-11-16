@@ -1,6 +1,7 @@
 mod calling_code;
 mod container_number;
 mod country;
+mod currency_code;
 mod domain_name;
 mod email_address;
 mod phone_number;
@@ -9,6 +10,7 @@ mod region;
 
 pub use container_number::{ContainerNumber, ContainerNumberProblem};
 pub use country::{CountryCode, CountryCodeProblem};
+pub use currency_code::{CurrencyCode, CurrencyCodeProblem};
 pub use domain_name::{DomainName, DomainNameProblem};
 pub use email_address::{EmailAddress, EmailAddressProblem};
 pub use phone_number::{PhoneNumber, PhoneNumberProblem};

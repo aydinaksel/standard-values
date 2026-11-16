@@ -1,6 +1,6 @@
 #![cfg(feature = "serde")]
 
-use standard_values::{ContainerNumber, EmailAddress, PhoneNumber, Region};
+use standard_values::{ContainerNumber, CurrencyCode, EmailAddress, PhoneNumber, Region};
 
 #[test]
 fn values_travel_as_their_plain_text() {
@@ -22,4 +22,11 @@ fn regions_are_checked_as_a_pair() {
     let florida: Region = serde_json::from_str(r#"{"country":"US","subdivision":"FL"}"#).unwrap();
     assert_eq!(florida.subdivision_name(), Some("Florida"));
     serde_json::from_str::<Region>(r#"{"country":"US","subdivision":null}"#).unwrap_err();
+}
+
+#[test]
+fn currency_codes_travel_as_their_code_and_withdrawn_ones_are_refused() {
+    let euro: CurrencyCode = serde_json::from_str("\"eur\"").unwrap();
+    assert_eq!(serde_json::to_string(&euro).unwrap(), "\"EUR\"");
+    serde_json::from_str::<CurrencyCode>("\"BGN\"").unwrap_err();
 }

@@ -34,6 +34,7 @@ feedback, so both show the same message. Optional fields use
 | `DomainName` | RFC 1035 host names | Lowercase |
 | `ContainerNumber` | ISO 6346, including the check digit | `CSQU3054383`, with the corrected number on a mismatch |
 | `CountryCode` | ISO 3166-1 alpha-2 | `GB`, with its name |
+| `CurrencyCode` | ISO 4217 alphabetic codes in current use | `GBP`, with its name, numeric code and decimal places |
 | `Region` | ISO 3166-2, checked with its country | Country plus an optional subdivision; United States states are required and listed |
 
 ## What Belongs Here
