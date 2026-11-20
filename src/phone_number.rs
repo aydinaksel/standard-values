@@ -6,7 +6,8 @@ use crate::{Problem, text_value};
 
 const MINIMUM_PHONE_DIGITS: usize = 8;
 const MAXIMUM_PHONE_DIGITS: usize = 15;
-const SEPARATORS: [char; 6] = [' ', '-', '(', ')', '.', '/'];
+const SEPARATORS: [char; 5] = ['-', '(', ')', '.', '/'];
+const TRUNK_PREFIX_IN_BRACKETS: &str = "(0)";
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct PhoneNumber(String);
@@ -51,8 +52,9 @@ impl Problem for PhoneNumberProblem {
 
 fn without_separators(typed: &str) -> String {
     typed
+        .replace(TRUNK_PREFIX_IN_BRACKETS, "")
         .chars()
-        .filter(|character| !SEPARATORS.contains(character))
+        .filter(|character| !character.is_whitespace() && !SEPARATORS.contains(character))
         .collect()
 }
 
@@ -135,6 +137,27 @@ mod tests {
             PhoneNumber::parse(" +90 212 555 12 34 ").map(String::from),
             Ok("+902125551234".to_owned())
         );
+    }
+
+    #[test]
+    fn drops_a_bracketed_trunk_prefix() {
+        assert_eq!(
+            PhoneNumber::parse("+44 (0) 7700 900123").map(String::from),
+            Ok("+447700900123".to_owned())
+        );
+        assert_eq!(
+            PhoneNumber::parse("+44 (0)20 7183 8750").map(String::from),
+            Ok("+442071838750".to_owned())
+        );
+    }
+
+    #[test]
+    fn treats_any_whitespace_as_a_separator() {
+        assert_eq!(
+            PhoneNumber::parse("+44\u{a0}7700\t900123").map(String::from),
+            Ok("+447700900123".to_owned())
+        );
+        assert_eq!(PhoneNumber::parse_optional("\t\n"), Ok(None));
     }
 
     #[test]
