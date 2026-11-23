@@ -21,9 +21,6 @@
             pkgs.rustfmt
           ];
           env.RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
-          env.RUSTC_WRAPPER = "${pkgs.sccache}/bin/sccache";
-          env.SCCACHE_SERVER_PORT = toString (4200 + pkgs.lib.toInt (pkgs.lib.versions.minor pkgs.sccache.version));
-          env.SCCACHE_CACHE_SIZE = "50G";
         };
       });
     };
